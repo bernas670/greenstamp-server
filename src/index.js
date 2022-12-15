@@ -1,6 +1,8 @@
 const express = require('express')
 const multer = require('multer')
 const mime = require('mime-types')
+const fs = require('fs')
+const https = require('https')
 
 
 const app = express()
@@ -26,6 +28,11 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 const port = process.env.PORT || 8080
 
-app.listen(port, () => {
-    console.log(`App listening on http://localhost:${port}`)
-})
+const options = {
+    key: fs.readFileSync('certificates/website.key'),
+    cert: fs.readFileSync('certificates/website.crt'),
+    ca: fs.readFileSync('certificates/ca.crt'),
+}
+
+https.createServer(options, app).listen(port)
+console.log(`App listening on https://localhost:${port}`)
