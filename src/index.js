@@ -31,7 +31,7 @@ const port = process.env.PORT || 8080
 const options = {
     key: fs.readFileSync('certificates/website.key'),
     cert: fs.readFileSync('certificates/website.crt'),
-    ca: fs.readFileSync('certificates/ca.crt'),
+    ca: fs.readFileSync('certificates/CA.crt'),
 }
 
 https.createServer(options, app).listen(port)
