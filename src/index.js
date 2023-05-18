@@ -3,9 +3,16 @@ const multer = require('multer')
 const mime = require('mime-types')
 const fs = require('fs')
 const https = require('https')
+const http = require('http')
 
 
-const app = express()
+const options = {
+    cert: fs.readFileSync('/etc/letseencrypt/live/green.dei.uc.pt/fullchain.pem', 'utf8'),
+    key: fs.readFileSync('/etc/letseencrypt/live/green.dei.uc.pt/privkey.pem', 'utf8'),
+    ca: fs.readFileSync('/etc/letseencrypt/live/green.dei.uc.pt/chain.pem', 'utf8')
+}
+
+
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -20,19 +27,24 @@ const upload = multer({
     dest: 'uploads/'
 })
 
+const app = express()
+
+app.use((req, res) => {
+	res.send('Hello there!')
+})
+
 
 app.post('/upload', upload.single('file'), (req, res) => {
     // Save the uploaded file to the server
     res.send('File saved!')
 })
 
-const port = process.env.PORT || 8080
 
-const options = {
-    key: fs.readFileSync('certificates/website.key'),
-    cert: fs.readFileSync('certificates/website.crt'),
-    ca: fs.readFileSync('certificates/CA.crt'),
-}
+const httpServer = http.createServer(app)
+const httpsServer = https.createServer(options, app)
 
-https.createServer(options, app).listen(port)
-console.log(`App listening on https://localhost:${port}`)
+httpServer.listen(80)
+httpsServer.listen(443)
+
+console.log(`App listening on http://localhost:80`)
+console.log(`App listening on https://localhost:443`)
