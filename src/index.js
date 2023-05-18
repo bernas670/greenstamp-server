@@ -7,9 +7,9 @@ const http = require('http')
 
 
 const options = {
-    cert: fs.readFileSync('/certificates/fullchain.pem', 'utf8'),
-    key: fs.readFileSync('/certificates/privkey.pem', 'utf8'),
-    ca: fs.readFileSync('/certificates/chain.pem', 'utf8')
+    cert: fs.readFileSync('certificates/fullchain.pem', 'utf8'),
+    key: fs.readFileSync('certificates/privkey.pem', 'utf8'),
+    ca: fs.readFileSync('certificates/chain.pem', 'utf8')
 }
 
 
