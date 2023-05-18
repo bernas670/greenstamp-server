@@ -14,7 +14,7 @@ These instructions will get you the API up and running in a Docker container.
     ```
 2. Run the docker container and map the ports:
     ```
-    docker run -p <device_port_http>:80 -p <device_port_https>:443 greenstamp-server
+    docker run -p <device_port_http>:80 -p <device_port_https>:443 -v <certificates_path>:/certificates:r greenstamp-server
     ```
 
 This will start the API in a Docker container and expose it on port `<device_port>` on the host machine.
